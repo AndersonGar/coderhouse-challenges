@@ -20,6 +20,10 @@ public class TankShoot : MonoBehaviour
     void Update()
     {
         Timer();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            projectile.transform.localScale *= 2;
+        }
     }
 
     void Shoot()
