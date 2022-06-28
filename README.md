@@ -3,3 +3,5 @@ Look the code in the branch with the same name. For example the third challenges
 
 - Challenge 3: Instantiate a projectile of basic way.
 - Challenge 4: Shoot projectile with J, K and L keys. I added a coroutine that destroy the projectile 5 seconds later.
+- Challenge 5: Shoot with a timer
+- Challenge 6: Movemente of player with camera changing. Press key "C" to change the camera. Used Cinemachine.
