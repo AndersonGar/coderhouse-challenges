@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed;
-    public GameObject cam1, cam2;
+    public Transform tCamera;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         Move();
-        CameraControl();
+        Rotate();
     }
 
     void Move()
@@ -24,23 +24,16 @@ public class PlayerMovement : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         Vector3 axis = new Vector3(h,0f,v);
-        if (axis != Vector3.zero)
-        {
-            GetComponent<AudioSource>().mute = false;
-        }
-        else
-        {
-            GetComponent<AudioSource>().mute = true;
-        }
         transform.Translate(axis * speed * Time.deltaTime);
     }
 
-    void CameraControl()
+    void Rotate()
     {
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            cam1.SetActive(cam2.activeSelf);
-            cam2.SetActive(!cam1.activeSelf);
-        }
+        Quaternion rotation = Quaternion.LookRotation(tCamera.position - transform.position);
+        rotation.x = 0f;
+        rotation.z = 0f;
+        rotation *= Quaternion.Euler(0, 180, 0);
+        transform.rotation = rotation;
     }
+    
 }
