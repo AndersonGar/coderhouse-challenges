@@ -4,36 +4,77 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed;
-    public Transform tCamera;
+    public Vector3 initPos, finalPos;
+    bool touchDoor;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        touchDoor = false;
+    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.name == "BumpWall")
+    //    {
+    //        touchDoor = true;
+    //    }
+    //}
+    private void OnTriggerExit(Collider other)
+    {
+        string hitName = other.gameObject.name;
+        if(hitName == "ShrinkerWall")
+        {
+            print("Hay un shrinker");
+            ChangeScale();
+        }
+        else if (other.gameObject.name == "BumpWall")
+        {
+            touchDoor = false;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerStay(Collider other)
     {
-        Move();
-        Rotate();
+        if(other.gameObject.name == "BumpWall")
+        {
+            touchDoor = true;
+        }
     }
 
-    void Move()
+    IEnumerator TeleportDoor(Transform door)
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-        Vector3 axis = new Vector3(h,0f,v);
-        transform.Translate(axis * speed * Time.deltaTime);
+        Vector3 randPos = GetRandomPos();
+        yield return new WaitForSeconds(2);
+        if (touchDoor)
+        {
+            door.position = randPos;
+            door.LookAt(transform);
+        }
     }
 
-    void Rotate()
+    private void OnTriggerEnter(Collider other)
     {
-        Quaternion rotation = Quaternion.LookRotation(tCamera.position - transform.position);
-        rotation.x = 0f;
-        rotation.z = 0f;
-        rotation *= Quaternion.Euler(0, 180, 0);
-        transform.rotation = rotation;
+        if (other.gameObject.name == "BumpWall")
+        {
+            StartCoroutine(TeleportDoor(other.gameObject.transform));
+            
+        }
     }
-    
+    void ChangeScale()
+    {
+        if (transform.localScale == Vector3.one)
+        {
+            transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        }
+        else
+        {
+            transform.localScale = Vector3.one;
+        }
+    }
+
+    Vector3 GetRandomPos()
+    {
+        return new Vector3(Random.Range(initPos.x,finalPos.x), Random.Range(initPos.y, finalPos.y), Random.Range(initPos.z, finalPos.z));
+    }
+
 }
