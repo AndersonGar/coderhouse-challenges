@@ -6,10 +6,11 @@ public class PlayerMovement : MonoBehaviour
 {
     public float speed;
     public Transform tCamera;
+    Animator animator;
     // Start is called before the first frame update
     void Start()
     {
-        
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -25,6 +26,14 @@ public class PlayerMovement : MonoBehaviour
         float v = Input.GetAxis("Vertical");
         Vector3 axis = new Vector3(h,0f,v);
         transform.Translate(axis * speed * Time.deltaTime);
+        if (axis == Vector3.zero)
+        {
+            PlayAnimation(false);
+        }
+        else
+        {
+            PlayAnimation(true);
+        }
     }
 
     void Rotate()
@@ -36,4 +45,9 @@ public class PlayerMovement : MonoBehaviour
         transform.rotation = rotation;
     }
     
+    void PlayAnimation(bool run)
+    {
+        animator.SetBool("Runing",run);
+    }
+
 }
