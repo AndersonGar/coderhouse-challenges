@@ -7,3 +7,4 @@ Look the code in the branch with the same name. For example the third challenges
 - Challenge 6: Movemente of player with camera changing. Press key "C" to change the camera. Used Cinemachine.
 - Challenge 7: An enemy following to the player, an enemy looking at the player and an enemy can do the two behaviours.
 - Challenge 8: Portal make player change his scale when he collides with it. And a door that change its position and rotation when the player collides with it by 2 seconds.
+- Challenge 9: Scene with differents lights: directional, spotlight and pointlight. Also there are two materials, an opaque and another transparent.
