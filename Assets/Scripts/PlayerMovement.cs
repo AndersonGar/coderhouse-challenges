@@ -5,12 +5,15 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed;
-    public Transform tCamera;
-    Animator animator;
+    public float sensibilidadMouse = 100f;
+    public float xRotacion;
+    public float yRotacion;
+    public Transform cam;
     // Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<Animator>();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -18,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Move();
         Rotate();
+        Shoot();
     }
 
     void Move()
@@ -26,28 +30,38 @@ public class PlayerMovement : MonoBehaviour
         float v = Input.GetAxis("Vertical");
         Vector3 axis = new Vector3(h,0f,v);
         transform.Translate(axis * speed * Time.deltaTime);
-        if (axis == Vector3.zero)
-        {
-            PlayAnimation(false);
-        }
-        else
-        {
-            PlayAnimation(true);
-        }
+        
     }
 
     void Rotate()
     {
-        Quaternion rotation = Quaternion.LookRotation(tCamera.position - transform.position);
-        rotation.x = 0f;
-        rotation.z = 0f;
-        rotation *= Quaternion.Euler(0, 180, 0);
-        transform.rotation = rotation;
+        float mouseX = Input.GetAxis("Mouse X") * sensibilidadMouse * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * sensibilidadMouse * Time.deltaTime;
+
+        xRotacion -= mouseY;
+        xRotacion = Mathf.Clamp(xRotacion, -70, 70);
+
+        yRotacion += mouseX;//esto es asi sino funciona al reves
+        transform.localRotation = Quaternion.Euler(0, yRotacion, 0);
+    }
+
+    void Shoot()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Transform cameraPos = Camera.main.transform;
+            if (Physics.Raycast(cameraPos.position, cameraPos.forward, out hit))
+            {
+                if (hit.collider.tag == "Projectile")
+                {
+                    Destroy(hit.collider.gameObject);
+                    GameManager.score++;
+                    GameManager.ShowFullScore();
+                }
+            }
+        }
     }
     
-    void PlayAnimation(bool run)
-    {
-        animator.SetBool("Runing",run);
-    }
 
 }
