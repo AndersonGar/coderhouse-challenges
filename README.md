@@ -8,3 +8,4 @@ Look the code in the branch with the same name. For example the third challenges
 - Challenge 7: An enemy following to the player, an enemy looking at the player and an enemy can do the two behaviours.
 - Challenge 8: Portal make player change his scale when he collides with it. And a door that change its position and rotation when the player collides with it by 2 seconds.
 - Challenge 9: Scene with differents lights: directional, spotlight and pointlight. Also there are two materials, an opaque and another transparent.
+- Challenge 10: Sample Scene with two raycast. A player raycast and enemy raycast. This example was made with Singleton Pattern.
